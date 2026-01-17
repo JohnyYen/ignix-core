@@ -32,17 +32,8 @@ export interface IAPIHandler<
     req: APIRequest<{}, UpdateDto, { id: string | number }>,
     res: APIResponse<ResponseDto | undefined>
   ): Promise<void>;
-  hardDelete(
+  delete(
     req: APIRequest<{}, {}, { id: string | number }>,
     res: APIResponse<boolean>
   ): Promise<void>;
-  softDelete(
-    req: APIRequest<{}, {}, { id: string | number }>,
-    res: APIResponse<boolean>
-  ): Promise<void>;
-  restore(
-    req: APIRequest<{}, {}, { id: string | number }>,
-    res: APIResponse<boolean>
-  ): Promise<void>;
-  count(req: APIRequest, res: APIResponse<number>): Promise<void>;
 }
