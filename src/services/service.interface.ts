@@ -3,7 +3,8 @@ import { ICreateDto, IUpdateDto } from "../types/dto";
 import { Result } from "../types/result";
 
 export interface IService<
-  T extends { id: number | string },
+  T extends Record<K, string | number>,
+  K extends keyof T,
   CreateDto = Omit<T, "id">,
   UpdateDto = Partial<T>,
   ResponseDto = T,
@@ -26,7 +27,8 @@ export interface IService<
 }
 
 export interface ILegacyService<
-  T extends { id: number | string },
+  T extends Record<K, string | number>,
+  K extends keyof T,
   CreateDto = Omit<T, "id">,
   UpdateDto = Partial<T>,
   ResponseDto = T,

@@ -13,39 +13,40 @@ export interface APIResponse<Data = any> {
 }
 
 export interface IAPIHandler<
-  T extends { id: number | string },
-  CreateDto = Omit<T, "id">,
+  T extends Record<K, string | number>,
+  K extends keyof T,// K es la key que identifica T
+  CreateDto = Omit<T, K>, // Excluimos la key K
   UpdateDto = Partial<T>,
   ResponseDto = T,
   E = ServiceError,
 > {
-  findAll(
-    req: APIRequest,
-    res: APIResponse<Result<ResponseDto[], E>>,
-  ): Promise<void>;
+  // Obtener todos los elementos
+  findAll(req: APIRequest, res: APIResponse<ResponseDto[]>): Promise<void>;
 
+  // Obtener un elemento por la key K (id, slug, uuid, etc.)
   findById(
-    req: APIRequest<{}, {}, { id: string | number }>,
-    res: APIResponse<Result<ResponseDto, E>>,
+    req: APIRequest<{}, {}, Record<K, string | number>>,
+    res: APIResponse<ResponseDto | null>,
   ): Promise<void>;
 
-  findOne(
-    req: APIRequest,
-    res: APIResponse<Result<ResponseDto, E>>,
-  ): Promise<void>;
+  // Obtener un solo elemento según algún criterio
+  findOne(req: APIRequest, res: APIResponse<ResponseDto | null>): Promise<void>;
 
+  // Crear un nuevo elemento
   create(
     req: APIRequest<{}, CreateDto>,
-    res: APIResponse<Result<ResponseDto, E>>,
+    res: APIResponse<ResponseDto>,
   ): Promise<void>;
 
+  // Actualizar un elemento por la key K
   update(
-    req: APIRequest<{}, UpdateDto, { id: string | number }>,
-    res: APIResponse<Result<ResponseDto, E>>,
+    req: APIRequest<{}, UpdateDto, Record<K, string | number>>,
+    res: APIResponse<ResponseDto | undefined>,
   ): Promise<void>;
 
+  // Eliminar un elemento por la key K
   delete(
-    req: APIRequest<{}, {}, { id: string | number }>,
-    res: APIResponse<Result<boolean, E>>,
+    req: APIRequest<{}, {}, Record<K, string | number>>,
+    res: APIResponse<boolean>,
   ): Promise<void>;
 }
