@@ -1,14 +1,37 @@
 {
   "name": "@ignix/core",
   "version": "0.1.0",
+  "description": "A TypeScript package for type-safe services with Result pattern, ORM-agnostic repositories, and framework-flexible API handlers.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"
   ],
+  "keywords": [
+    "typescript",
+    "services",
+    "result-pattern",
+    "orm",
+    "api-handlers",
+    "nestjs",
+    "express",
+    "fastify",
+    "hono"
+  ],
+  "author": "Johny (Senior Architect, GDE, MVP)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ignix-core"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ignix-core/issues"
+  },
+  "homepage": "https://github.com/yourusername/ignix-core#readme",
   "devDependencies": {
     "typescript": "^5.9.3"
   }
