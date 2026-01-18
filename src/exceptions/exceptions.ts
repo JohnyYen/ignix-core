@@ -14,6 +14,7 @@ export interface ValidationError {
 
 export interface NotFoundError {
   type: "not_found";
+  message: string;
   resource: string;
   id: number | string;
 }
