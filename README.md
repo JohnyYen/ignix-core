@@ -164,13 +164,29 @@ See the `/examples` folder for full implementations.
 
 ---
 
+## Roadmap
+We have exciting plans for future versions to enhance DX and functionality:
+
+- **Validation Helpers**: Integrate schema validation (e.g., with Zod) for DTOs, returning Result-based errors.
+- **Pagination & Filtering**: Add utilities for paginated queries and advanced filtering options.
+- **Caching Layer**: Implement a caching interface with adapters (Redis, In-Memory) and decorators.
+- **Event System**: Introduce an event bus for decoupling and event-driven architectures (towards CQRS).
+- **Auth Helpers**: Provide lightweight helpers for JWT and role-based access.
+- **CLI Tool**: Create a CLI for code generation (services, repositories).
+- **More Adapters**: Expand ORM and framework support (Sequelize, Koa, etc.).
+- **CQRS Support**: Full CQRS implementation in v2 with commands and queries.
+
+Stay tuned! Contributions welcome for these features.
+
+---
+
 ## Contributing
 
 We welcome contributions! To get started:
 1. Fork the repo and clone it.
 2. Install dependencies: `npm install`.
 3. Run tests: `npm test`.
-4. Create a feature branch: `git checkout -b feature/your-feature`.
+4. Create a feature branch: `git checkout -b feature/your-amazing-your-feature`.
 5. Follow our coding standards: Use TypeScript strict mode, add tests for new features, and ensure Result pattern for error handling.
 6. Submit a PR with a clear description.
 
