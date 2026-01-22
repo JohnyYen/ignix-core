@@ -1,7 +1,15 @@
+/**
+ * Middleware function interface
+ * Standard Express.js style middleware signature
+ */
 export interface IMiddleware {
   (req: any, res: any, next: Function): void;
 }
 
+/**
+ * Application framework interface
+ * Abstracts common web framework functionality for routing and middleware
+ */
 export interface IAppFramework {
   get(path: string, ...handlers: IMiddleware[]): void;
   post(path: string, ...handlers: IMiddleware[]): void;

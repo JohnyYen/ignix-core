@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "docs": "typedoc --skipErrorChecking",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -22,17 +23,19 @@
     "fastify",
     "hono"
   ],
-  "author": "Johny (Senior Architect, GDE, MVP)",
+  "author": "Johny A. Pedraza <Developer>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/ignix-core"
+    "url": "https://github.com/JohnyYen/ignix-core"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/ignix-core/issues"
+    "url": "https://github.com/JohnyYen/ignix-core/issues"
   },
-  "homepage": "https://github.com/yourusername/ignix-core#readme",
+  "homepage": "https://github.com/JohnyYen/ignix-core#readme",
   "devDependencies": {
+    "jsdoc": "^4.0.5",
+    "typedoc": "^0.28.16",
     "typescript": "^5.9.3"
   }
 }

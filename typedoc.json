@@ -1,0 +1,13 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "name": "Ignix Core",
+  "includeVersion": true,
+  "exclude": ["**/node_modules/**", "**/dist/**", "**/tests/**"],
+  "readme": "README.md",
+  "theme": "default",
+  "categorizeByGroup": true,
+  "categoryOrder": ["Services", "Repositories", "API", "Types", "Exceptions", "Middleware", "Utils"],
+  "sort": ["source-order", "visibility"],
+  "searchInComments": true
+}

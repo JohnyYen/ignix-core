@@ -1,0 +1,25 @@
+{
+  "source": {
+    "include": ["src"],
+    "includePattern": "\\.(js|ts)$",
+    "exclude": ["node_modules", "dist", "tests"]
+  },
+  "opts": {
+    "destination": "docs/",
+    "recurse": true,
+    "readme": "README.md"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "default": {
+      "staticFiles": {
+        "include": []
+      }
+    }
+  },
+  "typescript": {
+    "moduleResolution": "node"
+  }
+}
