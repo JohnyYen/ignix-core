@@ -116,7 +116,7 @@ export abstract class APIHandler<
     const result = await this.service.update(req.params.id, req.body);
     if (result.type === "success") {
       res.status(200).json(result.data);
-    } else {
+         } else {
       res.status(500).json(result.error);
     }
   }

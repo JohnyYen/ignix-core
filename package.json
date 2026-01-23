@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "docs": "typedoc --skipErrorChecking",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
   "files": [
     "dist"
