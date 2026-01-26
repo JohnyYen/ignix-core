@@ -1,13 +1,18 @@
 {
   "name": "@ignix/core",
-  "version": "0.1.0",
+  "version": "1.5.0",
   "description": "A TypeScript package for type-safe services with Result pattern, ORM-agnostic repositories, and framework-flexible API handlers.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "docs": "typedoc --skipErrorChecking",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
+    "test:ci": "jest --ci --coverage --watchAll=false"
   },
   "files": [
     "dist"
@@ -34,7 +39,10 @@
   },
   "homepage": "https://github.com/JohnyYen/ignix-core#readme",
   "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
     "jsdoc": "^4.0.5",
+    "ts-jest": "^29.4.6",
     "typedoc": "^0.28.16",
     "typescript": "^5.9.3"
   }
