@@ -13,6 +13,8 @@ import { APIRequest, APIResponse, IAPIHandler } from "./api.inteface";
  * @template ResponseDto - The DTO type for response data
  * @template E - The error type for operation failures
  */
+
+
 export abstract class APIHandler<
   T extends Record<K, number | string>,
   K extends keyof T,
@@ -62,7 +64,8 @@ export abstract class APIHandler<
     req: APIRequest<{}, {}, Record<K, string | number>>,
     res: APIResponse<ResponseDto | null | E>,
   ): Promise<void> {
-    const result = await this.service.findById(req.params.id);
+    const paramKey = Object.keys(req.params)[0] as K;
+    const result = await this.service.findById(req.params[paramKey]);
     if (result.type === "success") {
       res.status(200).json(result.data);
     } else {
@@ -113,10 +116,11 @@ export abstract class APIHandler<
     req: APIRequest<{}, UpdateDto, Record<K, string | number>>,
     res: APIResponse<ResponseDto | undefined | E>,
   ): Promise<void> {
-    const result = await this.service.update(req.params.id, req.body);
+    const paramKey = Object.keys(req.params)[0] as K;
+    const result = await this.service.update(req.params[paramKey], req.body);
     if (result.type === "success") {
       res.status(200).json(result.data);
-         } else {
+    } else {
       res.status(500).json(result.error);
     }
   }
@@ -130,7 +134,8 @@ export abstract class APIHandler<
     req: APIRequest<{}, {}, Record<K, string | number>>,
     res: APIResponse<boolean | E>,
   ): Promise<void> {
-    const result = await this.service.softDelete(req.params.id);
+    const paramKey = Object.keys(req.params)[0] as K;
+    const result = await this.service.softDelete(req.params[paramKey]);
     if (result.type === "success") {
       res.status(200).json(result.data);
     } else {

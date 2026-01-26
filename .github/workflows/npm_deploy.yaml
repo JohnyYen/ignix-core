@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
 
 jobs:
   publish:
@@ -15,8 +19,33 @@ jobs:
           node-version: '18'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
-      - run: pnpm ci
-      - run: pnpm run build
-      - run: pnpm publish
+      - name: Install dependencies
+        run: pnpm ci
+      
+      - name: Run tests
+        run: pnpm run test:ci
+      
+      - name: Type checking
+        run: pnpm run build --noEmit
+      
+      - name: Check if version changed
+        id: version-check
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          PUBLISHED_VERSION=$(npm view @ignix/core version 2>/dev/null || echo "0.0.0")
+          if [ "$CURRENT_VERSION" = "$PUBLISHED_VERSION" ]; then
+            echo "same_version=true" >> $GITHUB_OUTPUT
+            echo "Version $CURRENT_VERSION is already published"
+          else
+            echo "same_version=false" >> $GITHUB_OUTPUT
+            echo "Publishing new version: $CURRENT_VERSION"
+          fi
+      
+      - name: Build package
+        run: pnpm run build
+      
+      - name: Publish to NPM
+        if: steps.version-check.outputs.same_version == 'false'
+        run: pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
