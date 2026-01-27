@@ -17,17 +17,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-          pnpm-version: '8'
-          cache: 'pnpm'
+          cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
-        run: pnpm ci
+        run: npm ci
       
       - name: Run tests
-        run: pnpm run test --passWithNoTests
+        run: npm test --passWithNoTests
       
       - name: Type checking
-        run: pnpm run build --noEmit
+        run: npm run build --noEmit
       
       - name: Check if version changed
         id: version-check
@@ -43,10 +42,10 @@ jobs:
           fi
       
       - name: Build package
-        run: pnpm run build
+        run: npm run build
       
       - name: Publish to NPM
         if: steps.version-check.outputs.same_version == 'false'
-        run: pnpm publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
