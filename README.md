@@ -1,4 +1,10 @@
 # @ignix/core 🚀
+
+[![npm version](https://img.shields.io/npm/v/@ignix/core.svg)](https://www.npmjs.com/package/@ignix/core)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
+
 A TypeScript package for building type-safe, extensible services with Result pattern, ORM-agnostic repositories, and framework-flexible API handlers.
 
 ---
@@ -10,6 +16,7 @@ A TypeScript package for building type-safe, extensible services with Result pat
 - [Architecture](#architecture)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Examples](#examples)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -161,6 +168,49 @@ const handler = new UserAPIHandler(service);
 ```
 
 See the `/examples` folder for full implementations.
+
+---
+
+## Examples
+
+The `examples/` folder contains runnable examples demonstrating core patterns:
+
+### Basic Usage (Result Pattern)
+
+```typescript
+import { ok, fail, isSuccess, isFailure, map, fromNullable } from '@ignix/core';
+import { ServiceError } from '@ignix/core';
+
+// Creating results
+const successResult = ok({ id: 1, name: 'John' });
+const errorResult = fail<ServiceError>({ type: 'validation', message: 'Invalid input' });
+
+// Type-safe checking
+if (isSuccess(successResult)) {
+  console.log(successResult.data.name); // TypeScript knows this is safe
+}
+
+if (isFailure(errorResult)) {
+  console.error(errorResult.error.message);
+}
+
+// Transforming success data
+const result = ok({ id: 1, name: 'john' });
+const uppercased = map(result, (user) => ({ ...user, name: user.name.toUpperCase() }));
+// uppercased.data.name === "JOHN"
+
+// Safe null handling
+const user = fromNullable(maybeUser, { type: 'not_found', message: 'User not found' });
+if (isSuccess(user)) {
+  console.log(user.data.name); // TypeScript knows it's not null
+}
+```
+
+### More Examples
+
+- **`examples/basic/basic.ts`** - Minimal BaseService with in-memory repository
+- **`examples/dtos/user-dto.ts`** - Custom DTOs with validation
+- **`examples/express/express-api.ts`** - Express API integration
 
 ---
 

@@ -15,7 +15,8 @@ export { APIHandler } from "./api/api.handlers";
 export * from "./api/adapters/route.adapter";
 
 // Types
-export { Result, ok, fail } from "./types/result";
+export { Result, ok, fail, isSuccess, isFailure, map, flatMap, fromPromise, fromNullable } from "./types/result";
+export type { SuccessResult, FailureResult } from "./types/result";
 export type { ICreateDto, IUpdateDto } from "./types/dto";
 
 // Exceptions

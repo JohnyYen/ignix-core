@@ -81,13 +81,67 @@ export abstract class BaseRepository<T extends { id: number | string }> implemen
    */
   constructor(protected client: any) {}
 
+  /**
+   * Finds all entities matching the provided options
+   * @param options - Query options for filtering, sorting, pagination, etc.
+   * @returns Promise resolving to an array of entities
+   */
   abstract findAll(options?: any): Promise<T[]>;
+
+  /**
+   * Finds a single entity by its ID
+   * @param id - The unique identifier of the entity
+   * @returns Promise resolving to the entity or null if not found
+   */
   abstract findById(id: string | number): Promise<T | null>;
+
+  /**
+   * Finds the first entity matching the provided options
+   * @param options - Query options for filtering
+   * @returns Promise resolving to the entity or null if not found
+   */
   abstract findOne(options: any): Promise<T | null>;
+
+  /**
+   * Creates a new entity with the provided data
+   * @param data - The data to create the entity with
+   * @returns Promise resolving to the created entity
+   */
   abstract create(data: any): Promise<T>;
+
+  /**
+   * Updates an existing entity with the provided data
+   * @param id - The unique identifier of the entity to update
+   * @param data - The data to update the entity with
+   * @returns Promise resolving to the updated entity or null if not found
+   */
   abstract update(id: string | number, data: any): Promise<T | null>;
+
+  /**
+   * Permanently deletes an entity (hard delete)
+   * @param id - The unique identifier of the entity to delete
+   * @returns Promise resolving to true if deleted, false if not found
+   */
   abstract hardDelete(id: string | number): Promise<boolean>;
+
+  /**
+   * Soft deletes an entity (marks as deleted without removing)
+   * @param id - The unique identifier of the entity to soft delete
+   * @returns Promise resolving to true if deleted, false if not found
+   */
   abstract softDelete(id: string | number): Promise<boolean>;
+
+  /**
+   * Restores a soft-deleted entity
+   * @param id - The unique identifier of the entity to restore
+   * @returns Promise resolving to true if restored, false if not found
+   */
   abstract restore(id: string | number): Promise<boolean>;
+
+  /**
+   * Counts entities matching the provided options
+   * @param options - Query options for filtering
+   * @returns Promise resolving to the count of matching entities
+   */
   abstract count(options?: any): Promise<number>;
 }

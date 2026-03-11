@@ -83,25 +83,51 @@ export interface IAPIHandler<
   ): Promise<void>;
 
   /**
-   * Handles PUT/PATCH request to update an existing entity
+   * Handles PUT request to fully replace an existing entity
+   * PUT requires all required fields - performs complete resource replacement
    * Maps to IService.update operation
    * @param req - The API request with identifier in params and UpdateDto in body
    * @param res - The API response object for updated ResponseDto or undefined
    */
-  // Actualizar un elemento por la key K
+  // Actualizar completamente un elemento (reemplazo total)
   update(
     req: APIRequest<{}, UpdateDto, Record<K, string | number>>,
     res: APIResponse<ResponseDto | undefined>,
   ): Promise<void>;
 
   /**
+   * Handles PATCH request to partially update an existing entity
+   * PATCH accepts partial data - only updates provided fields
+   * Maps to IService.update operation with partial data
+   * @param req - The API request with identifier in params and UpdateDto in body
+   * @param res - The API response object for updated ResponseDto or undefined
+   */
+  // Actualizar parcialmente un elemento (solo campos enviados)
+  patch(
+    req: APIRequest<{}, UpdateDto, Record<K, string | number>>,
+    res: APIResponse<ResponseDto | undefined>,
+  ): Promise<void>;
+
+  /**
    * Handles DELETE request to remove an entity
-   * Maps to IService.hardDelete operation
+   * Maps to IService.softDelete operation (soft delete)
    * @param req - The API request with identifier in params
    * @param res - The API response object for deletion success boolean
    */
-  // Eliminar un elemento por la key K
+  // Eliminar un elemento por la key K (soft delete)
   delete(
+    req: APIRequest<{}, {}, Record<K, string | number>>,
+    res: APIResponse<boolean>,
+  ): Promise<void>;
+
+  /**
+   * Handles hard DELETE request to permanently remove an entity
+   * Maps to IService.hardDelete operation (permanent deletion)
+   * @param req - The API request with identifier in params
+   * @param res - The API response object for deletion success boolean
+   */
+  // Eliminar permanentemente un elemento por la key K
+  hardDelete(
     req: APIRequest<{}, {}, Record<K, string | number>>,
     res: APIResponse<boolean>,
   ): Promise<void>;

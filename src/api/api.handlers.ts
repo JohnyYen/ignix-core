@@ -3,6 +3,21 @@ import { IService } from "../services/service.interface";
 import { APIRequest, APIResponse, IAPIHandler } from "./api.inteface";
 
 /**
+ * Maps ServiceError to appropriate HTTP status code
+ * @param error - The service error to map
+ * @returns HTTP status code
+ */
+const getStatusCode = <E>(error: E): number => {
+  if (error && typeof error === "object" && "type" in error) {
+    const err = error as unknown as ServiceError;
+    if (err.type === "validation") return 400;
+    if (err.type === "not_found") return 404;
+    if (err.type === "database") return 500;
+  }
+  return 500;
+};
+
+/**
  * Abstract API handler class implementing IAPIHandler
  * Provides HTTP endpoint implementations that delegate to service operations
  * Handles Result pattern responses and converts them to appropriate HTTP status codes
@@ -39,9 +54,9 @@ export abstract class APIHandler<
   ) {}
   /**
    * Handles GET request to retrieve all entities
-   * Returns 200 with data array on success, 500 with error on failure
    * @param req - The API request object
    * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
    */
   async findAll(
     req: APIRequest,
@@ -51,14 +66,14 @@ export abstract class APIHandler<
     if (result.type === "success") {
       res.status(200).json(result.data);
     } else {
-      res.status(500).json(result.error);
+      res.status(getStatusCode(result.error)).json(result.error);
     }
   }
   /**
    * Handles GET request to retrieve a single entity by ID
-   * Returns 200 with entity data on success, 500 with error on failure
    * @param req - The API request with identifier in params
    * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
    */
   async findById(
     req: APIRequest<{}, {}, Record<K, string | number>>,
@@ -69,14 +84,14 @@ export abstract class APIHandler<
     if (result.type === "success") {
       res.status(200).json(result.data);
     } else {
-      res.status(500).json(result.error);
+      res.status(getStatusCode(result.error)).json(result.error);
     }
   }
   /**
    * Handles GET request to find the first entity matching query criteria
-   * Returns 200 with entity data on success, 500 with error on failure
    * @param req - The API request with query criteria
    * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
    */
   async findOne(
     req: APIRequest,
@@ -86,14 +101,14 @@ export abstract class APIHandler<
     if (result.type === "success") {
       res.status(200).json(result.data);
     } else {
-      res.status(500).json(result.error);
+      res.status(getStatusCode(result.error)).json(result.error);
     }
   }
   /**
    * Handles POST request to create a new entity
-   * Returns 201 with created entity data on success, 500 with error on failure
    * @param req - The API request with CreateDto in body
    * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
    */
   async create(
     req: APIRequest<{}, CreateDto>,
@@ -103,14 +118,16 @@ export abstract class APIHandler<
     if (result.type === "success") {
       res.status(201).json(result.data);
     } else {
-      res.status(500).json(result.error);
+      res.status(getStatusCode(result.error)).json(result.error);
     }
   }
   /**
-   * Handles PUT/PATCH request to update an existing entity
-   * Returns 200 with updated entity data on success, 500 with error on failure
+   * Handles PUT (full replacement) or PATCH (partial update) request to update an existing entity
+   * PUT: Requires all required fields - performs full replacement
+   * PATCH: Accepts partial data - performs partial update
    * @param req - The API request with identifier in params and UpdateDto in body
    * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
    */
   async update(
     req: APIRequest<{}, UpdateDto, Record<K, string | number>>,
@@ -121,14 +138,35 @@ export abstract class APIHandler<
     if (result.type === "success") {
       res.status(200).json(result.data);
     } else {
-      res.status(500).json(result.error);
+      res.status(getStatusCode(result.error)).json(result.error);
+    }
+  }
+  /**
+   * Handles PATCH request to partially update an existing entity
+   * Unlike PUT (full replacement), PATCH only updates the provided fields
+   * Ideal for updating individual attributes without sending the entire resource
+   * @param req - The API request with identifier in params and partial UpdateDto in body
+   * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
+   */
+  async patch(
+    req: APIRequest<{}, UpdateDto, Record<K, string | number>>,
+    res: APIResponse<ResponseDto | undefined | E>,
+  ): Promise<void> {
+    const paramKey = Object.keys(req.params)[0] as K;
+    // PATCH accepts partial data - the service handles the partial update logic
+    const result = await this.service.update(req.params[paramKey], req.body);
+    if (result.type === "success") {
+      res.status(200).json(result.data);
+    } else {
+      res.status(getStatusCode(result.error)).json(result.error);
     }
   }
   /**
    * Handles DELETE request to soft delete an entity
-   * Returns 200 with deletion success boolean on success, 500 with error on failure
    * @param req - The API request with identifier in params
    * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
    */
   async delete(
     req: APIRequest<{}, {}, Record<K, string | number>>,
@@ -139,7 +177,26 @@ export abstract class APIHandler<
     if (result.type === "success") {
       res.status(200).json(result.data);
     } else {
-      res.status(500).json(result.error);
+      res.status(getStatusCode(result.error)).json(result.error);
+    }
+  }
+  /**
+   * Handles hard DELETE request to permanently remove an entity
+   * Unlike softDelete, this permanently removes the entity from the database
+   * @param req - The API request with identifier in params
+   * @param res - The API response object
+   * @returns Promise that resolves when the response is sent
+   */
+  async hardDelete(
+    req: APIRequest<{}, {}, Record<K, string | number>>,
+    res: APIResponse<boolean | E>,
+  ): Promise<void> {
+    const paramKey = Object.keys(req.params)[0] as K;
+    const result = await this.service.hardDelete(req.params[paramKey]);
+    if (result.type === "success") {
+      res.status(200).json(result.data);
+    } else {
+      res.status(getStatusCode(result.error)).json(result.error);
     }
   }
 }

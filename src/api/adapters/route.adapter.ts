@@ -63,10 +63,22 @@ export const createRoutes = <
     handler.update
   );
 
+  app.patch(
+    `${route}/:${routeKey}`,
+    ...(middlewares?.update ?? []),
+    handler.patch
+  );
+
   app.delete(
     `${route}/:${routeKey}`,
     ...(middlewares?.delete ?? []),
     handler.delete
+  );
+
+  app.delete(
+    `${route}/:${routeKey}/hard`,
+    ...(middlewares?.delete ?? []),
+    handler.hardDelete
   );
 
   return app;
