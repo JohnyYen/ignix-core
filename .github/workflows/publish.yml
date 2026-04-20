@@ -39,7 +39,5 @@ jobs:
 
       - name: Publish to npm
         run: |
-          npm logout || true
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          npm whoami
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > $NPM_CONFIG_USERCONFIG
           npm publish --access public
