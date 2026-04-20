@@ -37,6 +37,10 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Debug token
+        run: |
+          echo "Token starts with: ${{ secrets.NPM_TOKEN }}"
+
       - name: Publish to npm
         run: npm publish --access public
         env:
