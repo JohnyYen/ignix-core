@@ -1,3 +1,4 @@
 dist/
 node_modules/
-coverage/node_modules.backup/
+coverage/
+node_modules.backup/node_modules.backup/
