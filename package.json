@@ -1,6 +1,6 @@
 {
   "name": "@ignix/core",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A TypeScript package for type-safe services with Result pattern, ORM-agnostic repositories, and framework-flexible API handlers.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
