@@ -214,6 +214,14 @@ if (isSuccess(user)) {
 
 ---
 
+## Example Projects
+
+Full working projects using `@ignix/core` with different frameworks:
+
+- **[example-ignix-core](https://github.com/JohnyYen/example-ignix-core)** - Complete examples with Hono and Express
+
+---
+
 ## Roadmap
 We have exciting plans for future versions to enhance DX and functionality:
 
