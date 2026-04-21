@@ -32,3 +32,9 @@ export * from "./middleware/middleware.interface";
 
 // Utils
 export * from "./utils/utils";
+
+// CQRS
+export * from "./cqrs/types";
+export * from "./cqrs/command";
+export * from "./cqrs/query";
+export * from "./cqrs/mediator";
